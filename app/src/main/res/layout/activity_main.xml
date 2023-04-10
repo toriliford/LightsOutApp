@@ -2,61 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    >
 
-    <GridLayout
-        android:id="@+id/light_grid"
-        android:layout_width="wrap_content"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:useDefaultMargins="true"
-        android:columnCount="3"
-        android:rowCount="3"
-        android:layout_margin="25dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-        <Button style="@style/LightButton" />
-    </GridLayout>
-
-    <Button
-        android:id="@+id/new_game_button"
-        style="@style/GameOptionButton"
-        android:layout_marginTop="20dp"
-        android:text="@string/new_game"
-        android:onClick="onNewGameClick"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/light_grid" />
-
-    <Button
-        android:id="@+id/help_button"
-        style="@style/GameOptionButton"
-        android:text="@string/help_button"
-        android:onClick="onHelpClick"
-        app:layout_constraintLeft_toLeftOf="@id/new_game_button"
-        app:layout_constraintRight_toRightOf="@id/new_game_button"
-        app:layout_constraintTop_toBottomOf="@id/new_game_button" />
-
-    <Button
-        android:id="@+id/change_color_button"
-        style="@style/GameOptionButton"
-        android:text="@string/color_button"
-        android:onClick="onChangeColorClick"
-        app:layout_constraintLeft_toLeftOf="@id/new_game_button"
-        app:layout_constraintRight_toRightOf="@id/new_game_button"
-        app:layout_constraintTop_toBottomOf="@id/help_button"
-        />
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

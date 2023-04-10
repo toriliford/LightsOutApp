@@ -1,55 +1,68 @@
 package com.example.lightsoutapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-public class ColorActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
-    public static final String EXTRA_COLOR = "com.example.lightsoutapp.color";
+public class ColorActivity extends Fragment {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_color);
+    public class ColorFragment extends Fragment {
 
-        //get colorid from main activity
-        Intent intent = getIntent();
-        int colorId = intent.getIntExtra(EXTRA_COLOR, R.color.yellow);
+        public View onCreateView(@NonNull LayoutInflater inflater,
+                                 ViewGroup container, Bundle savedInstanceState) {
 
-        //select radio button matching color Id
-        int radioId = R.id.radio_yellow;
-        if (colorId == R.color.red) {
-            radioId = R.id.radio_red;
-        } else if (colorId == R.color.orange) {
-            radioId = R.id.radio_orange;
-        } else if (colorId == R.color.green) {
-            radioId = R.id.radio_green;
+            View rootView = inflater.inflate(R.layout.activity_color, container, false);
+
+            // Extract color ID from SharedPreferences
+            SharedPreferences sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
+            int colorId = sharedPref.getInt("color", R.color.yellow);
+
+            // Select the radio button matching the color ID
+            int radioId = R.id.radio_yellow;
+            if (colorId == R.color.red) {
+                radioId = R.id.radio_red;
+            } else if (colorId == R.color.orange) {
+                radioId = R.id.radio_orange;
+            } else if (colorId == R.color.green) {
+                radioId = R.id.radio_green;
+            }
+
+            RadioButton radio = rootView.findViewById(radioId);
+            radio.setChecked(true);
+
+            // Add click callback to all radio buttons
+            RadioGroup colorRadioGroup = rootView.findViewById(R.id.color_radio_group);
+            for (int i = 0; i < colorRadioGroup.getChildCount(); i++) {
+                radio = (RadioButton) colorRadioGroup.getChildAt(i);
+                radio.setOnClickListener(this::onColorSelected);
+            }
+
+            return rootView;
         }
 
-        RadioButton radio = findViewById(radioId);
-        radio.setChecked(true);
+        private void onColorSelected(View view) {
+            int colorId = R.color.yellow;
+            if (view.getId() == R.id.radio_red) {
+                colorId = R.color.red;
+            } else if (view.getId() == R.id.radio_orange) {
+                colorId = R.color.orange;
+            } else if (view.getId() == R.id.radio_green) {
+                colorId = R.color.green;
+            }
 
-    }
-
-    public void onColorSelected(View view) {
-        int colorId = R.color.yellow;
-        if (view.getId() == R.id.radio_red) {
-            colorId = R.color.red;
+            // Save selected color ID in SharedPreferences
+            SharedPreferences sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("color", colorId);
+            editor.apply();
         }
-        else if (view.getId() == R.id.radio_orange) {
-            colorId = R.color.orange;
-        }
-        else if (view.getId() == R.id.radio_green) {
-            colorId = R.color.green;
-        }
-
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_COLOR, colorId);
-        setResult(RESULT_OK, intent);
-        finish();
     }
 }

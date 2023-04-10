@@ -12,6 +12,9 @@
         android:theme="@style/Theme.LightsOut"
         tools:targetApi="31">
         <activity
+            android:name=".GameFragment"
+            android:exported="false" />
+        <activity
             android:name=".ColorActivity"
             android:exported="false" />
         <activity
